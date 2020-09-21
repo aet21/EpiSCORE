@@ -29,10 +29,10 @@ avDNAm.m <- constAvBetaTSS(testDNAm.m,type="450k");
 
 }
 \references{
-Zhu T, Breeze CE, Beck S, Teschendorff AE.
+Teschendorff AE, Zhu T, Breeze CE, Beck S.
 \emph{Cell-type deconvolution of bulk tissue DNA methylomes 
 from single-cell RNA-Seq data}
-Submitted.
+Genome Biol.2020
 
 Jiao Y, Widschwendter M, Teschendorff AE. 
 \emph{A systems-level integrative framework for genome-wide DNA methylation

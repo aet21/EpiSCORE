@@ -51,10 +51,10 @@ print(head(wRPC.o$est));
 
 }
 \references{
-Zhu T, Breeze CE, Beck S, Teschendorff AE.
+Teschendorff AE, Zhu T, Breeze CE, Beck S.
 \emph{Cell-type deconvolution of bulk tissue DNA methylomes 
 from single-cell RNA-Seq data}
-Submitted.
+Genome Biol.2020
 
 Teschendorff AE, Breeze CE, Zheng SC, Beck S. 
 \emph{A comparison of reference-based algorithms for correcting cell-type 

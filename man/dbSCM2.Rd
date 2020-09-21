@@ -28,10 +28,12 @@ Upon loading the data object, we find the following:
   \item \code{topIntMRscm2.m}: a matrix listing the imputable genes
 }
 }
+
 \references{
-Zhu T, Breeze CE, Beck S, Teschendorff AE
+Teschendorff AE, Zhu T, Breeze CE, Beck S.
 \emph{Cell-type deconvolution of bulk tissue DNA methylomes 
 from single-cell RNA-Seq data}
-Submitted.
+Genome Biol.2020
 }
+
 \keyword{datasets}

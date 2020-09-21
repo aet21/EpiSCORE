@@ -4,7 +4,7 @@
 \alias{ConstExpRef}
 \title{Construct mRNA expression reference matrix}
 \usage{
-ConstExpRef(exp.m, celltype.idx, namesCellT.v, markspecTH.v = NULL, ncores = 8)
+ConstExpRef(exp.m, celltype.idx, namesCellT.v, markspecTH.v = NULL)
 }
 \arguments{
 \item{exp.m}{The normalized scRNA-Seq data matrix with rows labeling unique genes (either human
@@ -28,8 +28,6 @@ we require this gene not to be expressed. For n cell-types, the maximum MSS valu
 n-1 and minimum value should be 1. The parameter must be a vector with one threshold
 value for each cell-type. If 'NULL' (the default option), each entry will be set to n-1.}
 
-\item{ncores}{The number of processing cores to use.}
-
 }
 \value{
   A list with two elements.
@@ -48,8 +46,8 @@ print(head(out.l$ref$med));
 
 }
 \references{
-Zhu T, Breeze CE, Beck S, Teschendorff AE
+Teschendorff AE, Zhu T, Breeze CE, Beck S.
 \emph{Cell-type deconvolution of bulk tissue DNA methylomes 
 from single-cell RNA-Seq data}
-Submitted.
+Genome Biol.2020
 }

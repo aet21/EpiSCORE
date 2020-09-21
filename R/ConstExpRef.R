@@ -34,8 +34,6 @@
 #' n-1 and minimum value should be 1. The parameter must be a vector with one threshold
 #' value for each cell-type. If 'NULL' (the default option), each entry will be set to n-1.
 #' 
-#' @param ncores
-#' The number of processing cores to use.
 #' 
 #' @return A list with two elements. The first element 'ref' is a list itself
 #' also with 2 elements, giving the reference expression matrices defined
@@ -46,10 +44,10 @@
 #'
 #' 
 #' @references 
-#' Zhu T, Breeze CE, Beck S, Teschendorff AE
+#' Teschendorff AE, Zhu T, Breeze CE, Beck S
 #' \emph{Cell-type deconvolution of bulk tissue DNA methylomes 
 #' from single-cell RNA-Seq data}
-#' Submitted.
+#' Genome Biol.2020
 #' 
 #' 
 #' @examples
@@ -57,13 +55,13 @@
 #' out.l <- ConstExpRef(lungSS2mca1.m,celltypeSS2.idx,celltypeSS2.v,markspecTH.v=rep(3,4));
 #' print(head(out.l$ref$med));
 #' 
-#' @importFrom parallel mclapply
+#' @importFrom presto wilcoxauc
 #'
 #' 
 #' @export
 #'     
 
-ConstExpRef <- function(exp.m,celltype.idx,namesCellT.v,markspecTH.v=NULL,ncores=8){
+ConstExpRef <- function(exp.m,celltype.idx,namesCellT.v,markspecTH.v=NULL){
 nCT <- length(unique(celltype.idx));
 if(nCT!=length(namesCellT.v)){
   print("PROBLEM WITH CELL-TYPE ANNOTATION");
@@ -85,16 +83,17 @@ for(ct in 1:nCT){
     ct.idx <- which(celltype.idx==ct);
     medexpMCT.m[,ct] <- apply(exp.m[,ct.idx],1,median);
     other.idx <- which(celltype.idx %in% setdiff(1:nCT,ct));
-    group.li <- list(ct=ct.idx,oth=other.idx);
-
-    mcl.o <- mclapply(idx.l,doWTprl,exp.m,group.li,mc.cores=ncores);
-    statWT.lm[[ct]] <- matrix(unlist(mcl.o),ncol=3,nrow=length(mcl.o),byrow=TRUE);
-    colnames(statWT.lm[[ct]]) <- c("LFC","AUC","P");
+    pheno.v <- rep(NA,ncol(exp.m));
+    pheno.v[ct.idx] <- 1;
+    pheno.v[other.idx] <- 2;
+    out.m <- wilcoxauc(exp.m,y=pheno.v,groups_use=1:2);
+    nf <- nrow(out.m)/2;
+    statWT.lm[[ct]] <- out.m[1:nf,c("logFC","auc","pval","padj")];
+    colnames(statWT.lm[[ct]]) <- c("LFC","AUC","P","Padj(BH)");
     rownames(statWT.lm[[ct]]) <- rownames(exp.m);
-    padj.v <- p.adjust(statWT.lm[[ct]][,3],"BH");
-    sig.idx <- which(padj.v < 0.05);
+    sig.idx <- which(statWT.lm[[ct]][,4] < 0.05);
     tmp.s <- sort(statWT.lm[[ct]][sig.idx,1],decreasing=TRUE,index.return=TRUE);
-    sigWT.lm[[ct]] <- statWT.lm[[ct]][sig.idx[tmp.s$ix],];    
+    sigWT.lm[[ct]] <- statWT.lm[[ct]][sig.idx[tmp.s$ix],];
 }
 names(sigWT.lm) <- namesCellT.v;
 print(lapply(sigWT.lm,nrow));
@@ -149,15 +148,15 @@ return(list(ref=refexpMCT.lm,markers=markerMCT.lm));
 ### Auxilliary function
 
 ### doWTprl
-doWTprl <- function(idx,data.m,group.li){
-    lfc <- mean(data.m[idx,group.li[[1]]]) - mean(data.m[idx,group.li[[2]]]);
-    wt.o <- wilcox.test(data.m[idx,group.li[[1]]],data.m[idx,group.li[[2]]]);
-    pv <- wt.o$p.value;
-    n.v <- unlist(lapply(group.li,length));
-    auc <- wt.o$stat/prod(n.v);
-    out.v <- c(lfc,auc,pv);
-    names(out.v) <- c("LFC","AUC","P");
-    return(out.v);
-}
+#doWTprl <- function(idx,data.m,group.li){
+#    lfc <- mean(data.m[idx,group.li[[1]]]) - mean(data.m[idx,group.li[[2]]]);
+#    wt.o <- wilcox.test(data.m[idx,group.li[[1]]],data.m[idx,group.li[[2]]]);
+#    pv <- wt.o$p.value;
+#    n.v <- unlist(lapply(group.li,length));
+#    auc <- wt.o$stat/prod(n.v);
+#    out.v <- c(lfc,auc,pv);
+#    names(out.v) <- c("LFC","AUC","P");
+#    return(out.v);
+#}
 
 

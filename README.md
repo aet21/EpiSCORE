@@ -15,7 +15,7 @@ vignette: >
 ---
 
 
-> __Abstract: EpiSCORE is an R-package for constructing a tissue-specific DNA methylation reference matrix that can be subsequently used in conjunction with a reference-based cell-type deconvolution algorithm to (i) obtain cell-type fraction estimates in a corresponding bulk-tissue sample for which a genome-wide DNAm profile exists, and (ii) to infer cell-type specific differential DNA methylation signals in the context of a general Epigenome-Wide-Association Study. EpiScore is aimed particularly at complex solid tissues, for which generating through experiment an appropriate DNAm reference matrices representing all the major cell-types within the tissue is not possible. EpiScore exploits the tissue-specific single-cell RNA-Sequencing atlases to construct corresponding tissue-specific DNA methylation references.__
+> __Abstract: EpiSCORE is an R-package for constructing a tissue-specific DNA methylation reference matrix that can be subsequently used in conjunction with a reference-based cell-type deconvolution algorithm to (i) obtain cell-type fraction estimates in a corresponding bulk-tissue sample for which a genome-wide DNAm profile exists, and (ii) to infer cell-type specific differential DNA methylation signals in the context of a general Epigenome-Wide-Association Study. EpiScore is aimed particularly at complex solid tissues, for which generating through experiment an appropriate DNAm reference matrices representing all the major cell-types within the tissue is not possible. EpiScore exploits the tissue-specific single-cell RNA-Sequencing atlases to construct corresponding tissue-specific DNA methylation references. EpiSCORE has been published in Genome Biology 2020 @Teschendorff2020 .__
 
 
 # Motivation and Background
