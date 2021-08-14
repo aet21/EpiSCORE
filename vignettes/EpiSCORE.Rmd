@@ -118,10 +118,10 @@ head(refMmg.m);
 
 ## Validating the imputed DNAm reference matrix
 
-Note: In order to run through this section you will need to download the file `dataExampleLung.Rd` from http://github.com/aet21/EpiSCORE, put it in your working directory, and load it in:
+Let us first load in the required data objects:
 
 ```{r chunk9, eval=T, echo=T}
-load("dataExampleLung.Rd")
+data(dataExampleLung)
 ```
 
 Let us now validate the imputed DNAm reference matrix. Our strategy will be to validate it by first demonstrating that it can predict reasonably accurate cell-type fractions in simulated in-silico mixtures, for which the underlying cell-type proportions are known. Ideally, these mixtures should be generated from purified samples representing the exact same cell-types in the lung scRNA-Seq atlas. However, DNAm data of purified samples representing these exact same cell-types may not always be available. We use the next best surrogates: for epithelial cells we use normal epithelial cell lines from ENCODE, for fibroblasts we use normal adult fibroblast cell-line from ENCODE, for endothelial cells we use a 450k set profiling pulmonary endothelial cells, and for immune-cells we use purified 450k profiles from (@Reinius2012). We have precomputed 100 in-silico mixtures over a common set of 483793 probes from the Illumina 450k platform, which due to size restrictions we can't upload here. Assume however that this matrix (called `dataSIM.m`) has been uploaded. Since this DNAm data matrix is defined over CpGs and our reference matrix is defined for promoter regions, we need to collapse or summarise the DNAm data matrix at the level of gene promoters. We do this by averaging the DNAm values for probes mapping to within 200bp upstream of each gene's transcription start site (TSS). If such probes are not available, we take the average over 1st Exon probes. If these are also not available, we discard the gene. This model of assigning unique DNAm values to genes was validated in our previous publication (@Jiao2014). To perform this averaging, we would run the function `constAvBetaTSS` but instead we comment this operation out:
