@@ -15,7 +15,7 @@ vignette: >
 ---
 
 
-> __Abstract: EpiSCORE is an R-package for constructing a tissue-specific DNA methylation reference matrix that can be subsequently used in conjunction with a reference-based cell-type deconvolution algorithm to (i) obtain cell-type fraction estimates in a corresponding bulk-tissue sample for which a genome-wide DNAm profile exists, and (ii) to infer cell-type specific differential DNA methylation signals in the context of a general Epigenome-Wide-Association Study. EpiScore is aimed particularly at complex solid tissues, for which generating through experiment an appropriate DNAm reference matrices representing all the major cell-types within the tissue is not possible. EpiScore exploits the tissue-specific single-cell RNA-Sequencing atlases to construct corresponding tissue-specific DNA methylation references. EpiSCORE has been published in Genome Biology 2020 @Teschendorff2020 .__
+> __Abstract: EpiSCORE is an R-package for constructing a tissue-specific DNA methylation reference matrix that can be subsequently used in conjunction with a reference-based cell-type deconvolution algorithm to (i) obtain cell-type fraction estimates in a corresponding bulk-tissue sample for which a genome-wide DNAm profile exists, and (ii) to infer cell-type specific differential DNA methylation signals in the context of an epigenome study performed in that tissue-type. EpiScore is aimed particularly at complex solid tissues, for which experimentally generating an appropriate DNAm reference matrix representing all the major cell-types within the tissue is not possible. EpiScore exploits the tissue-specific single-cell RNA-Sequencing atlases to construct corresponding tissue-specific DNA methylation references. The EpiSCORE R-package also includes the first installment of a DNAm-Atlas resource for over 13 tissue-types and 42 cell-types .__
 
 
 # Motivation and Background
@@ -36,6 +36,7 @@ vignette: >
 3. **Application to infer cell-type fractions and differentially methylated cell-types (DMCTs).**
 
 <p>To illustrate the whole procedure, we shall focus on <span style="color:red">lung tissue</span>, using the Smart-Seq2 scRNA-Seq from the Tabula Muris to construct the scRNA-Seq reference matrix. We shall then validate the expression reference matrix using the 10X scRNA-Seq data also from Tabula Muris. We next impute the DNAm reference matrix for lung-tissue, and apply it to the lung squamous cell carcinoma (LUSC) Illumina 450k DNAm dataset from the TCGA.</p>
+<p> **Of note: with this package we also provide the first installment of a DNAm-atlas, encompassing 42 cell-types and 13 tissue-types. Thus, if a user has a specific bulk tissue DNAm dataset, let us say in a tissue like pancreas, then the user can load in directly the pancreas-specific DNAm atlas provided in this package to then estimate cell-type fractions and infer DMCTs. The procedure for this (i.e. task-3 above) is exactly as described in the tutorial below for lung-tissue.**</p>
 
 # Tutorial Example
 In order to run the tutorial we must first load in the necessary library and data objects:
@@ -47,7 +48,7 @@ data(lungSS2mca1); ##loads in scRNA-Seq SmartSeq2 lung atlas
 data(lung10Xmca1); ##loads in a subset of the scRNA-Seq 10X lung atlas for validation purpose
 ls();
 ```
-We shall use the `lungSS2mca1.m` data matrix object which contains the scRNA-Seq lung atlas (SmartSeq2) from the Tabula Muris to first contruct the mRNA expression reference matrix. We shall do this for the four main cell-types in lung tissue: epithelial, endothelial, stromal (fibroblasts) and immune-cells. To see, how many of each there are:
+We shall use the `lungSS2mca1.m` data matrix object which contains the scRNA-Seq lung atlas (SmartSeq2) from the Tabula Muris to first contruct the mRNA expression reference matrix. We shall do this for the four main cell-types in lung tissue: epithelial, endothelial, stromal (fibroblasts) and immune-cells. To see how many of each there are:
 
 ```{r chunk2, eval=T, echo=T}
 ncpct.v <- summary(factor(celltypeSS2.idx));
@@ -63,14 +64,14 @@ expref.o <- ConstExpRef(lungSS2mca1.m,celltypeSS2.idx,celltypeSS2.v,markspecTH=r
 print(dim(expref.o$ref$med));
 head(expref.o$ref$med);
 ```
-We can see that the reference matrix contains 1293 unique marker genes and that the first genes are markers for immune-cells as they are highly expressed in such cells, but not in the other cell-types. Indeed, these marker genes all have maximal specificity scores of 3, as required since the `markspecTH.v` vector was to be 3 for all cell-types. We can also see that for each cell-type there are at least 100 marker genes. We strongly recommend on the order of this number of marker genes for each cell-type, since for only about $20\%$ of the marker genes it will be possible to impute DNAm values.
+We can see that the reference matrix contains 1293 unique marker genes and that the first genes are markers for immune-cells as they are highly expressed in such cells, but not in the other cell-types. Indeed, these marker genes all have maximal specificity scores of 3, as required since the `markspecTH.v` vector was set to 3 for all cell-types. We can also see that for each cell-type there are at least 100 marker genes. We strongly recommend on the order of this number of marker genes for each cell-type, since for only about $20\%$ of the marker genes it will be possible to impute DNAm values.
 
 ## Validating the expression reference matrix
 
 Let us now validate the constructed reference matrix, using the lung scRNA-Seq 10X dataset
 from Tabula Muris. We only use a subset of 49 cells from each of the same cell-types in the 10X set, because of file size restrictions. We consider 49 cells of each cell-type because this was the smallest number assayed in the 10X experiment across the 4 cell-types considered here. For the validation strategy,
 we aim to estimate for each single-cell in the 10X dataset, the proportions of the underlying cell-types
-as given by our expression reference matrix. If our reference matrix is correct, we would expect that cells annotated to given cell-types as done by the Tabula Muris consortium should be correctly predicted to be such cell-types by our expression reference matrix. To make the prediction we consider the cell-type attaining the largest estimated proportion. To estimate cell-type fractions we can use our epidish function, which is part of the EpiDISH Bioconductor package @Teschendorff2017, in the robust partial correlation (RPC) mode. Thus, in what follows, we load in the 10X data and EpiDISH library, and subsequently estimate cell-type fractions:
+as given by our expression reference matrix. If our reference matrix is correct, we would expect that cells annotated to given cell-types as done by the Tabula Muris consortium should be correctly predicted to be such cell-types by our expression reference matrix. To make the prediction we consider the cell-type attaining the largest estimated proportion. To estimate cell-type fractions we can use our epidish function, which is part of the EpiDISH Bioconductor package (@Teschendorff2017), in the robust partial correlation (RPC) mode. Thus, in what follows, we load in the 10X data and EpiDISH library, and subsequently estimate cell-type fractions:
 
 ```{r chunk4, eval=T, echo=T}
 data(lung10Xmca1);
@@ -96,14 +97,14 @@ That is, the overall accuracy is close to $100\%$, and so we can be satisfied th
 
 ## Building the DNAm reference matrix
 
-Now that we have validated the lung-specific expression reference matrix, the next step is to generate a corresponding tissue-specific DNAm reference matrix. The underlying hypothesis is that a significant proportion of the marker genes in the expression reference exhibit variation in gene expression between the cell-types that can be explained, i.e. predicted to some degree of accuracy, by variation in DNAm at regulatory elements associated with the gene. We refer to genes for which DNAm at their regulatory element (and we shall be focusing on the gene promoter) is predictable from its expression level, as "imputable genes". To find imputable genes, we first perform a genome-wide scan using independent datasets that have profiled mRNA expression and DNAm in a genome-wide manner for a reasonable number of samples, ideally, purified or relatively pure samples representing many different cell-types. Two such independent datasets are available, one from the NIH Epigenomics Roadmap (RMAP) @Bernstein2010, and another from the Stem-Cell-Matrix Compendium-2 (SCM2) @Nazor2012. The former is sequencing based involving WGBS and RNA-Seq data, whereas the SCM2-dataset is Illumina beadarray based. We provide the two matched datasets within the `EpiSCORE` package, together with a list of the imputable genes from each set. Thus, when building the DNAm reference matrix, we first build two separate DNAm reference matrices, one for each of the two databases:
+Now that we have validated the lung-specific expression reference matrix, the next step is to generate a corresponding tissue-specific DNAm reference matrix. The underlying hypothesis is that a significant proportion of the marker genes in the expression reference exhibit variation in gene expression between the cell-types that can be explained, i.e. predicted to some degree of accuracy, by variation in DNAm at regulatory elements associated with the gene. We refer to genes for which DNAm at their regulatory element (and we shall be focusing on the gene promoter) is predictable from its expression level, as "imputable genes". To find imputable genes, we first perform a genome-wide scan using independent datasets that have profiled matched mRNA expression and DNAm in a genome-wide manner for a reasonable number of samples, ideally, purified or relatively pure samples representing many different cell-types. Two such independent datasets are available, one from the NIH Epigenomics Roadmap (RMAP) (@Bernstein2010), and another from the Stem-Cell-Matrix Compendium-2 (SCM2) (@Nazor2012). The former is sequencing based involving WGBS and RNA-Seq data, whereas the SCM2-dataset is Illumina beadarray based. We provide the two matched datasets within the `EpiSCORE` package, together with a list of the imputable genes from each set. Thus, when building the DNAm reference matrix, we first build two separate DNAm reference matrices, one for each of the two databases:
 
 ```{r chunk7, eval=T, echo=T}
 refMscm2.m <- ImputeDNAmRef(expref.o$ref$med,db="SCM2",geneID="SYMBOL");
 refMrmap.m <- ImputeDNAmRef(expref.o$ref$med,db="RMAP",geneID="SYMBOL");
 ```
 
-In the above, we also specified that the gene identifier in the expression reference matrix is the official gene symbol, which we will then convert into Entrez Gene IDs. At present only gene symbol and Entrez gene IDs are supported. One could in principle use these separate DNAm reference matrix, but we will merge them, because for the overlapping genes in the two references, there is very strong correlation in DNAm patterns, suggesting that it makes sense to increase marker gene coverage by merging the two DNAm reference matrices. To merge, we run
+In the above, we also specified that the gene identifier in the expression reference matrix is the official gene symbol, which we will then convert into Entrez Gene IDs. At present only gene symbol and Entrez gene IDs are supported. One could in principle use these separate DNAm reference matrices, but we will merge them, because for the overlapping genes in the two references, there is very strong correlation in DNAm patterns, suggesting that it makes sense to increase marker gene coverage by merging the two DNAm reference matrices. To merge, we run
 
 ```{r chunk8, eval=T, echo=T}
 refMmg.m <- ConstMergedDNAmRef(refMscm2.m,refMrmap.m);
@@ -112,7 +113,7 @@ head(refMmg.m);
 ```
 <p>From the output, we can see that the final DNAm reference matrix consists of 258 gene promoters. The DNAm values for some of the top genes in the matrix have been displayed (now with Entrez Gene IDs), showing how for these particular genes, the promoter DNAm value for the immune-cells is zero (because these genes are highly expressed in immune-cells), whilst the DNAm value for the other cell-types is close to 1. We note that these marker genes are **not** expressed in epithelial, endothelial and fibroblasts, so the imputation model assigns the same DNAm value for these cell-types. We also note that the weight is the average of these non-zero DNAm values. Thus, genes with weights close to 1 are most informative, whereas a gene with a weight close to 0 will not be very informative. Correspondingly, these weights will be used later when inferring cell-type fractions in bulk-tissue samples, to favour the genes with weights close to 1.</p>
 
-<p> We note that some of the genes in the DNAm reference matrix have a weight of zero. These occur mainly because there were no samples in the database (SMC2/RMAP) for which the corresponding gene was not expressed, thus not allowing for the DNAm value to be imputed. A solution for these genes would be to fit logistic regressions with DNAm as the response variable and expression as the independent variable, but in the current version of `EpiSCORE` this is not supported.
+<p> We note that some of the genes in the DNAm reference matrix have a weight of zero. These occur mainly because there were no samples in the database (SMC2/RMAP) for which the corresponding gene was not expressed, thus not allowing for the DNAm value to be imputed. For these genes it would be possible to fit logistic regressions with DNAm as the response variable and expression as the independent variable, but in the current version of `EpiSCORE` this is not supported.
 
 
 ## Validating the imputed DNAm reference matrix
@@ -123,7 +124,7 @@ Note: In order to run through this section you will need to download the file `d
 load("dataExampleLung.Rd")
 ```
 
-Let us now validate the imputed DNAm reference matrix. Our strategy will be to validate it by first demonstrating that it can predict reasonably accurate cell-type fractions in simulated in-silico mixtures, for which the underlying cell-type proportions are known. Ideally, these mixtures should be generated from purified samples representing the exact same cell-types in the lung scRNA-Seq atlas. However, DNAm data of purified samples representing these exact same cell-types may not always be available. We use the next best surrogates: for epithelial cells we use normal epithelial cell lines from ENCODE, for fibroblasts we use normal adult fibroblast cell-line from ENCODE, for endothelial cells use a 450k set profiling pulmonary endothelial cells, and for immune-cells we used purified 450k profiles from @Reinius2012. We have precomputed 100 in-silico mixtures over a common set of 483793 probes from the Illumina 450k platform, which due to size restrictions we can't upload here. Assume however that this matrix (called `dataSIM.m`) has been uploaded. Since this DNAm data matrix is defined over CpGs and our reference matrix is defined for promoter regions, we need to collapse or summarise the DNAm data matrix at the level of gene promoters. We do this by averaging the DNAm values for probes mapping to within 200bp upstream of each gene's transcription start site (TSS). If such probes are not available, we take the average over 1st Exon probes. If these are also not available, we discard the gene. This model of assigning unique DNAm values to genes was validated in our previous publication @Jiao2014. To perform this averaging, we would run the function `constAvBetaTSS` but instead comment this operation out:
+Let us now validate the imputed DNAm reference matrix. Our strategy will be to validate it by first demonstrating that it can predict reasonably accurate cell-type fractions in simulated in-silico mixtures, for which the underlying cell-type proportions are known. Ideally, these mixtures should be generated from purified samples representing the exact same cell-types in the lung scRNA-Seq atlas. However, DNAm data of purified samples representing these exact same cell-types may not always be available. We use the next best surrogates: for epithelial cells we use normal epithelial cell lines from ENCODE, for fibroblasts we use normal adult fibroblast cell-line from ENCODE, for endothelial cells we use a 450k set profiling pulmonary endothelial cells, and for immune-cells we use purified 450k profiles from (@Reinius2012). We have precomputed 100 in-silico mixtures over a common set of 483793 probes from the Illumina 450k platform, which due to size restrictions we can't upload here. Assume however that this matrix (called `dataSIM.m`) has been uploaded. Since this DNAm data matrix is defined over CpGs and our reference matrix is defined for promoter regions, we need to collapse or summarise the DNAm data matrix at the level of gene promoters. We do this by averaging the DNAm values for probes mapping to within 200bp upstream of each gene's transcription start site (TSS). If such probes are not available, we take the average over 1st Exon probes. If these are also not available, we discard the gene. This model of assigning unique DNAm values to genes was validated in our previous publication (@Jiao2014). To perform this averaging, we would run the function `constAvBetaTSS` but instead we comment this operation out:
 
 ```{r chunk10, eval=T, echo=T, verbatim=FALSE}
 #avSIM.m <- constAvBetaTSS(dataSIM.m,type="450k");
@@ -144,7 +145,7 @@ print(paste("Number of selected genes=",length(which(refMmg.m[,5]>0.4)),sep=""))
 estF.o <- wRPC(data=avSIM.m,ref=refMmg.m,useW=TRUE,wth=0.4,maxit=200);
 ```
 
-Thus, the number of selected genes for the cell-type fraction estimation is 135, which is quite a reasonable number for 4 cell-types. If this number were much less than 100, the subsequent inference may not be meaningful. Let us now check how well the cell-type fractions correlate with the exact proportions given in the `trueW.m` matrix:
+Thus, the number of selected genes for the cell-type fraction estimation is 135, which is a reasonable number for 4 cell-types. If this number were much less than 100, the subsequent inference may not be meaningful. Let us now check how well the cell-type fractions correlate with the exact proportions given in the `trueW.m` matrix:
 
 ```{r chunk13, eval=T, echo=T}
 print(cor(estF.o$estF,trueW.m));
@@ -163,7 +164,7 @@ for(ct in 1:4){
 }
 ```
 
-This shows that it has been possible to reasonably accurately infer cell-type proportions in these in-silico mixtures. The validation of the whole procedure on real data mixtures is done in the next section.
+This shows that it has been possible to infer cell-type proportions in these in-silico mixtures. The validation of the whole procedure on real data mixtures is done in the next section.
 
 # Validation and application of EpiSCORE on real epigenome data
 
@@ -181,11 +182,11 @@ pv <- wilcox.test(estF.o$est[,"Epi"] ~ phenoLUSC.lv$Cancer,alt="less")$p.value;
 print(pv)
 ```
 
-We used alternative hypothesis as *less* because in `phenoLUSC.lv$Cancer`, cancer is 1 and normal is 0, and the null is that cancer is not higher than normal. The obtained P-value clearly indicates that the null can be rejected, demonstrating that the epithelial fraction is indeed much higher in cancer, owing to its growth.
+We used alternative hypothesis as *less* because in `phenoLUSC.lv$Cancer`, cancer is 1 and normal is 0, and the null is that cancer is not higher than normal. The obtained P-value clearly indicates that the null can be rejected, demonstrating that the epithelial fraction is indeed much higher in cancer, in line with an increased growth rate.
 
 ## Identification of cell-type specific differential DNAm in lung cancer
 
-Having obtained the cell-type fractions for the main cell-types in all lung-tissue samples, we can now aim to identify differentially methylated cell-types (DMCTs) in cancer, i.e. cell-type specific differentially methylated cytosines. Since we have a DNAm reference matrix, we can apply a reference-based method like CellDMC @Zheng2018, which incorporates statistical interaction terms between phenotype (normal vs cancer) and estimated cell-type fractions. Because the input are the estimated cell-type fractions themselves, CellDMC is run **over all CpGs**, that is, while the inference of cell-type fractions was done by consider promoter DNAm levels, identifying DMCTs is done at single cytosine resolution level. `CellDMC` is part of the `EpiDISH` package loaded in earlier and we provide detailed vignette in that package to explain how it is run. Because the full LUSC dataset `bmiqLSCCrmRS.m` is too large for inclusion here, we just display the syntax:
+Having obtained the cell-type fractions for the main cell-types in all lung-tissue samples, we can now aim to identify differentially methylated cell-types (DMCTs) in cancer, i.e. cell-type specific differentially methylated cytosines. Since we have a DNAm reference matrix, we can apply a reference-based method like CellDMC (@Zheng2018), which incorporates statistical interaction terms between phenotype (normal vs cancer) and estimated cell-type fractions. Of note, CellDMC is run **over all CpGs**, that is, while the inference of cell-type fractions was done by consider promoter DNAm levels, identifying DMCTs is done at the single cytosine resolution level. `CellDMC` is part of the `EpiDISH` package loaded in earlier and we provide detailed vignette in that package to explain how it is run. Because the full LUSC dataset `bmiqLSCCrmRS.m` is too large for inclusion here, we just display the syntax:
 
 ```{r chunk17, eval=F, echo=T}
 library(EpiDISH);
@@ -208,7 +209,7 @@ plot(res.o,"landscape",sort.by="size");
 
 This demonstrates that most of the DMCTs occur in the epithelial compartment, which is as expected, and that there is relatively little overlap between DMCTs called in each cell-type, except between endothelial and epithelial cells, and endothelial and immune-cells.
 
-The figure below is a follow-up result demonstrating a number of results that are consistent with previous biological knowledge. Notably, *HOX*-genes, transcription factors (TF) and bivalent targets of the Polycomb Repressive Complex-2 (BIV/PRC2) are well-known to be hypermethylated in cancer epithelial cells, and `CellDMC` in conjunction with our DNAm reference has been able to retrieve this important result:
+The figure below is a follow-up result demonstrating a number of results that are consistent with previous biological knowledge. Notably, *HOX*-genes, transcription factors (TF) and bivalent targets of the Polycomb Repressive Complex-2 (BIV/PRC2) are well-known to be hypermethylated in cancer epithelial cell. `CellDMC` in conjunction with our DNAm reference matrix has been able to retrieve this important result:
 
 
 ![Scatterplots of -log10[P-value] vs -log10[OddsRatio] of enrichment among cell-type specific DMCTs ](FigSB-GSEA-LSCC.png)
