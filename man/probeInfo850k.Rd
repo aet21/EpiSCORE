@@ -16,7 +16,7 @@ a CpG island or not, the type of cytosine (CpG vs non-CpG), and Entrez
 gene ID.
 }
 \details{
-A list object \code{probeInfoALL.lv} with following entries:
+A list object \code{probeInfo850k.lv} with following entries:
 \itemize{
   \item \code{probeID:} probe IDs
   \item \code{design:} probe design type

@@ -46,10 +46,12 @@
 
 constAvBetaTSS <- function(beta.m,type=c("450k","850k")){
  if(type=="450k"){
-  data("probeInfo450k");
+     data("probeInfo450k");
+     probeInfoALL.lv <- probeInfo450k.lv;
  }
  else if (type=="850k"){
   data("probeInfo850k");
+  probeInfoALL.lv <- probeInfo850k.lv;
  }
 
 map.idx <- match(rownames(beta.m), probeInfoALL.lv$probeID)

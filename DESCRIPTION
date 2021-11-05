@@ -1,8 +1,8 @@
 Package: EpiSCORE
 Title: Epigenetic cell-type deconvolution with Single-Cell Omic References
-Version: 0.9.3
+Version: 0.9.4
 Description: EpiSCORE is an R package to construct a tissue specific DNA methylation (DNAm) reference matrix starting out from a corresponding tissue specific scRNAseq atlas. With the DNAm reference matrix one can then estimate fractions for the main cell types present in the reference matrix in a bulk-tissue sample for which a genome-wide DNAm profile exists. In this package we provide the first installment of a DNAm-atlas containing DNAm reference matrices for 13 tissue-types. In addition, the package allows inference of cell type specific differential DNAm in the context of a general epigenome-wide association study.
-Date: 2021-8-13
+Date: 2021-11-5
 Author: Andrew E. Teschendorff <andrew@picb.ac.cn>
 Maintainer: Andrew E. Teschendorff <andrew@picb.ac.cn>
 Depends: R (>= 3.6)

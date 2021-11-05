@@ -16,7 +16,7 @@ region (1=TSS1500, 2=TSS200, 3=5UTR, 4=1st Exon, 5=Body, 6=3UTR),
 if in a CpG island or not, probe-ID and Entrez gene ID.
 }
 \details{
-  A list \code{probeInfoALL.lv} with following entries:
+  A list \code{probeInfo450k.lv} with following entries:
 \itemize{
   \item \code{typeC}: CpG or non-CpG
   \item \code{Design}: probe design type
