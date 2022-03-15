@@ -5,7 +5,7 @@ author:
   affiliation: 
   - CAS Key Lab of Computational Biology, PICB, SINH
   - UCL Cancer Institute, University College London
-date: "2021-08-13"
+date: "2022-03-15"
 package: EpiSCORE
 output:
   BiocStyle::html_document:
@@ -27,4 +27,6 @@ devtools::install_github("aet21/EpiSCORE")
 
 # References
 
-Teschendorff AE, Zhu T, Breeze CE, Beck S. EPISCORE: cell type deconvolution of bulk tissue DNA methylomes from single-cell RNA-Seq data. Genome Biology 2020 Sep 4;21(1):221. doi: 10.1186/s13059-020-02126-9. 
+Teschendorff AE, Zhu T, Breeze CE, Beck S. EPISCORE: cell type deconvolution of bulk tissue DNA methylomes from single-cell RNA-Seq data. Genome Biology 2020 Sep 4;21(1):221. doi: 10.1186/s13059-020-02126-9 .
+
+Zhu T, Liu J, Beck S, Pan S, Capper D, Lechner M, Thirlwell C, Breeze CE, Teschendorff AE. A pan-tissue DNA methylation atlas enables in silico decomposition of human tissue methylomes at cell-type resolution. Nat Methods 2022 Mar;19(3):296. doi: 10.1038/s41592-022-01412-7 .

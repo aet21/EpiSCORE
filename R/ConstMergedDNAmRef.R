@@ -21,6 +21,11 @@
 #' \emph{Cell-type deconvolution of bulk tissue DNA methylomes 
 #' from single-cell RNA-Seq data}
 #' Genome Biol.2020
+#'
+#' Zhu T, Liu J, Beck S, Pan S, Capper D, Lechner M, Thirlwell C, Breeze CE, Teschendorff AE.
+#' \emph{A pan-tissue DNA methylation atlas enables in silico decomposition
+#' of human tissue methylomes at cell-type resolution.} Nat Methods 2022
+#' 
 #' 
 #' 
 #' @examples 

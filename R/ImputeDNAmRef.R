@@ -34,6 +34,9 @@
 #' from single-cell RNA-Seq data}
 #' Genome Biol.2020
 #' 
+#' Zhu T, Liu J, Beck S, Pan S, Capper D, Lechner M, Thirlwell C, Breeze CE, Teschendorff AE.
+#' \emph{A pan-tissue DNA methylation atlas enables in silico decomposition
+#' of human tissue methylomes at cell-type resolution.} Nat Methods 2022
 #' 
 #' @examples 
 #' data(lungSS2mca1)
@@ -52,11 +55,13 @@ if(geneID=="SYMBOL"){
   eid.v <- convertIDs(rownames(refexp.m), "SYMBOL", "ENTREZID", org.Hs.eg.db,ifMultiple="useFirst");
   na.idx <- which(is.na(eid.v));
   xx <- as.list(org.Hs.egALIAS2EG)
-  xx <- xx[!is.na(xx)]
+  xx <- xx[!is.na(xx)];
   map.idx <- match(rownames(refexp.m)[na.idx],names(xx));
   eidNA.v <- vector();
   for(n in 1:length(na.idx)){
-    eidNA.v[n] <- xx[[map.idx[n]]][1];
+    if(!is.na(map.idx[n])){
+        eidNA.v[n] <- xx[[map.idx[n]]][1];
+    }
   }
   eid.v[na.idx] <- eidNA.v;
   refexpEID.v <- eid.v;
