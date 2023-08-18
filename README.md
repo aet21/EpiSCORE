@@ -23,6 +23,9 @@ To install (you will also need to install the dependency package presto):
 ```r
 library(devtools)
 devtools::install_github("immunogenomics/presto")
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("org.hs.eg.db")
 devtools::install_github("aet21/EpiSCORE")
 ```
 
