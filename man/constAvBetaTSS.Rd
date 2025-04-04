@@ -2,32 +2,30 @@
 % Please edit documentation in R/constAvBetaTSS.R
 \name{constAvBetaTSS}
 \alias{constAvBetaTSS}
-\title{Construct a DNAm matrix at gene-level}
+\title{Construct a DNAm matrix at gene-promoter level}
 \usage{
-constAvBetaTSS(beta.m, type = c("450k", "850k"))
+constAvBetaTSS(beta.m, type = c("450k", "850k","EPICv2"))
 }
 \arguments{
-\item{type}{This specifies whether data is 450k or 850k.}
+\item{type}{This specifies whether data is 450k, 850k (EPICv1) or EPICv2.}
 \item{beta.m}{A DNAm beta-valued data matrix with columns labeling samples
   and rows labeling CpGs. At present we only support Illumina 450k or
   850k methylation beadarrays.}
 }
 \value{
-The DNAm data matrix at the gene-level.
+The DNAm data matrix at the gene-promoter level.
 }
 \description{
 This function takes as input a DNAm data matrix generated with
-Illumina 450k or 850k technology and outputs a DNAm data matrix
-at the gene level, by computing the average DNAm over a window
+Illumina 450k, 850k or EPICv2 technology and outputs a DNAm data matrix
+at the gene promoter level, by computing the average DNAm over a window
 200bp upstream of TSS, or if not available over 1st exon probes.
 }
 \examples{
 data(testDNAm);
 avDNAm.m <- constAvBetaTSS(testDNAm.m,type="450k");
-
-
-
 }
+
 \references{
 Teschendorff AE, Zhu T, Breeze CE, Beck S.
 \emph{Cell-type deconvolution of bulk tissue DNA methylomes 

@@ -15,7 +15,7 @@
 #' At present we only support Illumina 450k or 850k methylation beadarrays.
 #' 
 #' @param type
-#' This specifies whether data is 450k or 850k.
+#' This specifies whether data is 450k, 850k or EPICv2
 #'
 #' 
 #' @return The DNAm data matrix at the gene-level.
@@ -44,7 +44,7 @@
 #' @export
 #'     
 
-constAvBetaTSS <- function(beta.m,type=c("450k","850k")){
+constAvBetaTSS <- function(beta.m,type=c("450k","850k","EPICv2")){
  if(type=="450k"){
      data("probeInfo450k");
      probeInfoALL.lv <- probeInfo450k.lv;
@@ -53,6 +53,11 @@ constAvBetaTSS <- function(beta.m,type=c("450k","850k")){
   data("probeInfo850k");
   probeInfoALL.lv <- probeInfo850k.lv;
  }
+ else if (type=="EPICv2"){
+  data("probeInfoEPICv2");
+  probeInfoALL.lv <- probeInfoEPICv2.lv;
+ }
+ 
 
 map.idx <- match(rownames(beta.m), probeInfoALL.lv$probeID)
 probeInfo.lv <- lapply(probeInfoALL.lv, function(tmp.v,ext.idx){return(tmp.v[ext.idx]);}, map.idx);

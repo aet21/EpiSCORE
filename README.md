@@ -4,8 +4,7 @@ author:
 - name: "Andrew E. Teschendorff"
   affiliation: 
   - CAS Key Lab of Computational Biology, PICB, SINH
-  - UCL Cancer Institute, University College London
-date: "2022-03-15"
+date: "2025-04-03"
 package: EpiSCORE
 output:
   BiocStyle::html_document:
@@ -14,7 +13,7 @@ output:
 
 # Summary
 
-EpiSCORE is an R-package for constructing a tissue-specific DNA methylation reference matrix that can be subsequently used in conjunction with a reference-based cell-type deconvolution algorithm to (i) obtain cell-type fraction estimates in a corresponding bulk-tissue sample for which a genome-wide DNAm profile exists, and (ii) to infer cell-type specific differential DNA methylation signals in the context of a general Epigenome-Wide-Association Study. EpiScore is aimed particularly at complex solid tissues, for which experimentally generating appropriate DNAm reference matrices representing all the major cell-types within the tissue is not possible. EpiScore exploits the tissue-specific single-cell RNA-Sequencing atlases to construct corresponding tissue-specific DNA methylation references. The EpiSCORE R-package also contains a DNAm-atlas for 13 tissue-types.
+EpiSCORE is an R-package for constructing a tissue-specific DNA methylation reference matrix that can be subsequently used in conjunction with a reference-based cell-type deconvolution algorithm to (i) obtain cell-type fraction estimates in a corresponding bulk-tissue sample for which a genome-wide DNAm profile exists, and (ii) to infer cell-type specific differential DNA methylation signals in the context of a general Epigenome-Wide-Association Study. EpiScore is aimed at complex solid tissues, for which experimentally generating appropriate DNAm reference matrices representing all the major cell-types within the tissue is challenging. EpiScore exploits the tissue-specific single-cell RNA-Sequencing atlases to impute corresponding tissue-specific DNA methylation references. The EpiSCORE R-package currently contains DNAm reference matrices for 13 solid tissues. Of note, the EpiSCORE DNAm reference panels are defined at the level of gene promoters. As such, the method is applicable to any DNAm-assay where DNAm can be summarized as beta-values at the level of gene promoters. It is therefore applicable to all Illumina arrays, WGBS or RRBS.
 
 # Installation
 

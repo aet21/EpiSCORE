@@ -1,11 +1,11 @@
 Package: EpiSCORE
 Title: Epigenetic cell-type deconvolution with Single-Cell Omic References
-Version: 0.9.5
-Description: EpiSCORE is an R package to construct a tissue specific DNA methylation (DNAm) reference matrix starting out from a corresponding tissue specific scRNAseq atlas. With the DNAm reference matrix one can then estimate fractions for the main cell types present in the reference matrix in a bulk-tissue sample for which a genome-wide DNAm profile exists. In this package we provide the first installment of a DNAm-atlas containing DNAm reference matrices for 13 tissue-types. In addition, the package allows inference of cell type specific differential DNAm in the context of a general epigenome-wide association study.
-Date: 2022-3-15
-Author: Andrew E. Teschendorff <andrew@picb.ac.cn>
-Maintainer: Andrew E. Teschendorff <andrew@picb.ac.cn>
-Depends: R (>= 3.6)
+Version: 0.9.6
+Description: EpiSCORE is an R package aimed at performing cell-type deconvolution of DNA methylation data from solid tissues. With EpiSCORE you can: (i) construct a tissue specific DNA methylation (DNAm) reference matrix (this is done by imputation from a corresponding tissue specific scRNAseq atlas), (ii) estimate fractions for the main cell types in a bulk-tissue sample for which a genome-wide DNAm profile exists. (iii) in conjunction with our EpiDISH package you can then also infer cell-type specific DNAm changes. In this package we also provide the first installment of a DNAm-atlas containing DNAm reference matrices for 13 tissue-types, encompassing 42 cell-types.
+Date: 2025-4-4
+Author: Andrew E. Teschendorff <andrew@sinh.ac.cn>
+Maintainer: Andrew E. Teschendorff <andrew@sinh.ac.cn>
+Depends: R (>= 4.4)
 Imports: org.Hs.eg.db, AnnotationDbi, MASS, parallel, presto
 Suggests: EpiDISH, BiocStyle, knitr, rmarkdown, Biobase
 VignetteBuilder: knitr
